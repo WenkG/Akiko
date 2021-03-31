@@ -1,6 +1,9 @@
 import time
 import telebot
+import os
 
+port = int(os.environ.get("PORT", 5000))
+app.run(debug=True, host='0.0.0.0', port=port)
 TOKEN = "1655376416:AAE5TZAtSNMnL_uwAofW7702yd4Fx_vuWgk"
 bot = telebot.TeleBot(token=TOKEN)
 
