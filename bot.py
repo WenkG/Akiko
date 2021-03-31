@@ -10,13 +10,15 @@ def findat(msg):
         if '@' in i:
             return i
 
-@bot.message_handler(commands=['start']) # welcome message handler
+@bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
-    bot.reply_to(message, '(placeholder text)')
+	bot.send_message(message.chat.id, "Привет, я Акико!\n(⁄ ⁄>⁄ ▽ ⁄<⁄ ⁄)\nА как зовут тебя?~")
 
-@bot.message_handler(commands=['help']) # help message handler
-def send_welcome(message):
-    bot.reply_to(message, 'ALPHA = FEATURES MAY NOT WORK')
+
+@bot.message_handler(func=lambda m: True) #????????
+def acquaintance(message):
+    name = message.text
+    bot.send_message(message.chat.id, f"Очень приятно, {name}＼(≧▽≦)／")
 
 @bot.message_handler(func=lambda msg: msg.text is not None and '@' in msg.text)
 # lambda function finds messages with the '@' sign in them
