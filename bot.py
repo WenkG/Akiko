@@ -1,47 +1,23 @@
-import telebot
 import os
-import time
+
 from flask import Flask, request
 
-TOKEN = "1655376416:AAE5TZAtSNMnL_uwAofW7702yd4Fx_vuWgk"
-bot = telebot.TeleBot(token=TOKEN)
+import telebot
+
+TOKEN = '1655376416:AAE5TZAtSNMnL_uwAofW7702yd4Fx_vuWgk'
+bot = telebot.TeleBot(TOKEN)
 server = Flask(__name__)
 
-def findat(msg):
-    # from a list of texts, it finds the one with the '@' sign
-    for i in msg:
-        if '@' in i:
-            return i
 
-@bot.message_handler(commands=['start', 'help'])
-def send_welcome(message):
-	bot.send_message(message.chat.id, "Привет, я Акико!\n(⁄ ⁄>⁄ ▽ ⁄<⁄ ⁄)\nА как зовут тебя?~")
+@bot.message_handler(commands=['start'])
+def start(message):
+    bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 
 
-@bot.message_handler(func=lambda m: True) #????????
-def acquaintance(message):
-    name = message.text
-    bot.send_message(message.chat.id, f"Очень приятно, {name}＼(≧▽≦)／")
+@bot.message_handler(func=lambda message: True, content_types=['text'])
+def echo_message(message):
+    bot.reply_to(message, message.text)
 
-@bot.message_handler(func=lambda msg: msg.text is not None and '@' in msg.text)
-# lambda function finds messages with the '@' sign in them
-# in case msg.text doesn't exist, the handler doesn't process it
-def at_converter(message):
-    texts = message.text.split()
-    at_text = findat(texts)
-    if at_text == '@': # in case it's just the '@', skip
-        pass
-    else:
-        insta_link = "https://ancient-tor-24688.herokuapp.com/".format(at_text[1:])
-        bot.reply_to(message, insta_link)
-
-while True:
-    try:
-        bot.polling(none_stop=True)
-        # ConnectionError and ReadTimeout because of possible timout of the requests library
-        # maybe there are others, therefore Exception
-    except Exception:
-        time.sleep(15)
 
 @server.route('/' + TOKEN, methods=['POST'])
 def getMessage():
