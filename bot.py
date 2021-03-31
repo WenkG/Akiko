@@ -36,7 +36,7 @@ def at_converter(message):
         insta_link = "https://ancient-tor-24688.herokuapp.com/".format(at_text[1:])
         bot.reply_to(message, insta_link)
 
-@server.route('https://ancient-tor-24688.herokuapp.com/' + TOKEN, methods=['POST'])
+@server.route('/' + TOKEN, methods=['POST'])
 def getMessage():
     json_string = request.get_data().decode('utf-8')
     update = telebot.types.Update.de_json(json_string)
@@ -44,7 +44,7 @@ def getMessage():
     return "!", 200
 
 
-@server.route("https://ancient-tor-24688.herokuapp.com/")
+@server.route("/")
 def webhook():
     bot.remove_webhook()
     bot.set_webhook(url='https://ancient-tor-24688.herokuapp.com/' + TOKEN)
